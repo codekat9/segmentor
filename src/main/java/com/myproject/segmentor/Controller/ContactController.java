@@ -1,44 +1,46 @@
 package com.myproject.segmentor.Controller;
 
 import com.myproject.segmentor.Repository.ContactRepository;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import com.myproject.segmentor.Beans.Contacts;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/contact")
 public class ContactController {
 
     @Autowired
     private ContactRepository contactRepository;
 
-    @PostMapping("/addContact")
-    public String insertContact(@RequestBody Contacts contact){
-        contactRepository.save(contact);
-        return "Added Contact with id:"+ contact.getId();
-    }
-
-    @PostMapping("/addContacts")
+    @PostMapping("/")
+    @ApiOperation(value = "Add new Contact(s) via this API",
+            notes = "Adds all the contact mentioned in the body of the POST request.",
+            response = Contacts.class)
     public String insertContact(@RequestBody List<Contacts> contactsList){
         contactRepository.saveAll(contactsList);
         return "Contacts Added";
     }
 
-    @GetMapping("/getContacts")
+    @GetMapping("/")
+    @ApiOperation(value = "Get all contacts",
+            notes = "Gets all the contacts stored in the application",
+            response = Contacts.class)
     public List<Contacts> getContacts(){
         return contactRepository.findAll();
 
     }
 
-    @GetMapping("/getContactByFirstName/{name}")
-    public List<Contacts> getContactByFirstName(@PathVariable String name){
-        return contactRepository.findByFirstName(name);
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Get contact with matching id",
+            notes = "Gets a single contact stored in the application with the matching id.",
+            response = Contacts.class)
+    public Optional<Contacts> getContactById(@PathVariable String id){
+        return contactRepository.findById(id);
     }
 
-    @DeleteMapping("/removeContact/{id}")
-    public String deleteContact(@PathVariable String id){
-        contactRepository.deleteById(id);
-        return "Contact with id"+ id+ ":deleted.";
-    }
 }

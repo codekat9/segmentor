@@ -1,16 +1,24 @@
 package com.myproject.segmentor.Beans;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+@ApiModel(description = "Contacts are the details of the customers you have done some" +
+        " business or are the potential customers.")
 public class Contacts {
 
     @Id
+    @ApiModelProperty(notes = "The Unique ID of Contact")
     private String id;
     @Field("first_name")
+    @ApiModelProperty(notes = "The first name of Contact")
     private String firstName;
     @Field("last_name")
+    @ApiModelProperty(notes = "The last name of Contact")
     private String lastName;
+    @ApiModelProperty(notes = "The title/surname of Contact")
     private String title;
     private String country;
     private String city;
@@ -19,8 +27,10 @@ public class Contacts {
     @Field("house_number")
     private String houseNumber;
     private String gender;
+    @ApiModelProperty(notes = "Email address of Contact")
     private String email;
     @Field("email_optin")
+    @ApiModelProperty(notes = "Information whether a customer has given consent to be contacted via email.")
     private String emailOptIn;
     @Field("phone_number")
     private String phoneNo;
